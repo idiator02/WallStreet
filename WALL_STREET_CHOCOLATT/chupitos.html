@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Colores, Texto y Contador</title>
+    <style>
+
+        @font-face {
+            font-family: 'MiFuentePersonalizada';
+            src: url('./fonts/miFuente.ttf') format('truetype');
+        }
+
+        /* Animación de colores de fondo */
+        @keyframes cambiarColores {
+            0% { background-color: red; }
+            20% { background-color: blue; }
+            40% { background-color: yellow; }
+            60% { background-color: green; }
+            80% { background-color: rgb(255, 227, 183); }
+            100% { background-color: black; }
+        }
+
+        /* Animación del tamaño del texto */
+        @keyframes aumentarDisminuirTexto {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 227, 183);
+            animation: cambiarColores 7s linear forwards; /* La animación dura 7s */
+            font-family: 'MiFuentePersonalizada';
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Ocultar el contenido inicialmente */
+        .contenedor-contador, .texto {
+            visibility: hidden; /* Oculta todo el contenido */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Clase para mostrar contenido */
+        .mostrar {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Contenedor para centrar el logo y el contador */
+        .contenedor-contador {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 300px;
+        }
+
+        .contador {
+            color: white;
+            font-size: 100px;
+            font-weight: bold;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .texto {
+            color: white;
+            font-size: 100px;
+            font-weight: bold;
+            animation: aumentarDisminuirTexto 2s infinite ease-in-out;
+            margin-bottom: 200px;
+            margin-top: 100px;
+        }
+
+        .contenedor-contador{
+            padding-left: 50px;
+            padding-right: 50px;
+            border: 5px solid white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="contenedor-contador" id="contenedorContador">
+        <img src="./img/logo.png" alt="Logo" class="logo"> <!-- Agrega tu logo aquí -->
+        <div class="contador" id="contador">
+            <span class="texto-contador">5:00</span>
+        </div>
+    </div>
+    <div class="texto" id="texto">CHUPITOS  1$</div>
+
+    <script>
+        // Función para iniciar el contador
+        function iniciarContador() {
+            let tiempo = 300; // Duración del temporizador en segundos (1 minuto = 60 segundos)
+            const contadorElement = document.getElementById('contador');
+
+            const interval = setInterval(() => {
+                const minutos = Math.floor(tiempo / 60);
+                const segundos = tiempo % 60;
+
+                // Mostrar el temporizador con formato mm:ss
+                contadorElement.innerHTML = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+
+                if (tiempo > 0) {
+                    tiempo--;
+                } else {
+                    clearInterval(interval);
+                    contadorElement.innerHTML = "00:00"; // Al llegar a 0
+                    window.location.href = "index.html";
+                }
+            }, 1000); // Actualizar cada segundo
+        }
+
+        // Esperar hasta que la animación de colores termine (7 segundos) para mostrar el texto y el contador
+        setTimeout(() => {
+            document.getElementById('contenedorContador').classList.add('mostrar');
+            document.getElementById('texto').classList.add('mostrar');
+            iniciarContador(); // Iniciar el contador después de mostrar el contenido
+        }, 5000); // Ajustar a la duración exacta de la animación de fondo
+    </script>
+</body>
+</html>
